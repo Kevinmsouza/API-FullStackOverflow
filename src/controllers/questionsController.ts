@@ -13,6 +13,16 @@ async function newQuestion(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function listNoAnsweredQuestions(req: Request, res: Response, next: NextFunction) {
+    try {
+        const questions = await questionsService.listNoAnsweredQuestions();
+        res.status(200).send(questions);
+    } catch (error) {
+        next(error);
+    }
+}
+
 export {
     newQuestion,
+    listNoAnsweredQuestions,
 };
