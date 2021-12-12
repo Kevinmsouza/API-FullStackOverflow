@@ -17,6 +17,7 @@
     "rules": {
         "indent": ["error", 4],
         "import/extensions": "off",
+        "import/prefer-default-export": "off",
         "max-len": 0,
         "consistent-return": "off"
     },
