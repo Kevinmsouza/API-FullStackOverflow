@@ -22,7 +22,29 @@ async function listNoAnsweredQuestions(req: Request, res: Response, next: NextFu
     }
 }
 
+async function createAnswer(req: Request, res: Response, next: NextFunction) {
+    try {
+        const newAnswer = {
+            questionId: Number(req.params.id),
+            answer: req.body.answer,
+            userId: res.locals.userId,
+        };
+        if (questionsValidations.newAnswer(newAnswer)) return res.sendStatus(400);
+        await questionsService.createAnswer(newAnswer);
+        res.sendStatus(201);
+    } catch (error) {
+        if (error.name === 'QuestionsError') {
+            return res.status(404).send(error.message);
+        }
+        if (error.name === 'AnswerError') {
+            return res.status(409).send(error.message);
+        }
+        next(error);
+    }
+}
+
 export {
     newQuestion,
     listNoAnsweredQuestions,
+    createAnswer,
 };

@@ -12,6 +12,19 @@ async function newUser(user: NewUser): Promise<UserToken> {
     return result.rows[0];
 }
 
+async function getUserIdByToken(userToken: UserToken): Promise<number | undefined> {
+    const { token } = userToken;
+    const result = await connection.query(`
+        SELECT
+            id
+        FROM users
+        WHERE token = $1
+        LIMIT 1
+    ;`, [token]);
+    return result.rows[0]?.id;
+}
+
 export {
     newUser,
+    getUserIdByToken,
 };
