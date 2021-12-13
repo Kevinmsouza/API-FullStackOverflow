@@ -43,8 +43,23 @@ async function createAnswer(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function getQuestionById(req: Request, res: Response, next: NextFunction) {
+    try {
+        const id = Number(req.params.id);
+        if (questionsValidations.checkId(id)) return res.sendStatus(400);
+        const question = await questionsService.getQuestionById({ id });
+        res.status(200).send(question);
+    } catch (error) {
+        if (error.name === 'QuestionsError') {
+            return res.status(404).send(error.message);
+        }
+        next(error);
+    }
+}
+
 export {
     newQuestion,
     listNoAnsweredQuestions,
     createAnswer,
+    getQuestionById,
 };

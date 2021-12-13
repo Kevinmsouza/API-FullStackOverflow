@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import AnswerError from '../errors/answerError';
 import QuestionsError from '../errors/questionsError';
-import { NewAnswer, NewQuestion } from '../interfaces/questionsInterface';
+import { NewAnswer, NewQuestion, QuestionId } from '../interfaces/questionsInterface';
 import * as questionsRepository from '../repositories/questionsRepository';
 
 async function newQuestion(question: NewQuestion) {
@@ -29,8 +29,25 @@ async function createAnswer(newAnswer: NewAnswer) {
     return questionsRepository.createAnswer(newAnswer);
 }
 
+async function getQuestionById(questionId: QuestionId) {
+    const result = await questionsRepository.getQuestionById(questionId);
+    if (!result) {
+        throw new QuestionsError('Question does not exist.');
+    }
+    result.submitAt = dayjs(result.submitAt).format('YYYY-MM-DD HH:mm');
+    if (!result.answered) {
+        delete result.answeredAt;
+        delete result.answeredBy;
+        delete result.answer;
+        return result;
+    }
+    result.answeredAt = dayjs(result.answeredAt).format('YYYY-MM-DD HH:mm');
+    return result;
+}
+
 export {
     newQuestion,
     listNoAnsweredQuestions,
     createAnswer,
+    getQuestionById,
 };

@@ -6,7 +6,7 @@ const router = Router();
 
 router.post('', questionsController.newQuestion);
 router.get('', questionsController.listNoAnsweredQuestions);
-
+router.get('/:id', questionsController.getQuestionById);
 router.use(authMiddleware);
 router.post('/:id', questionsController.createAnswer);
 

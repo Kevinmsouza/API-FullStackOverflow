@@ -19,6 +19,7 @@ interface Question {
     submitAt: Date | string;
     answeredAt?: Date | string |null;
     answererId?: number | null;
+    answeredBy?: string | null;
     answer?: string | null;
 }
 

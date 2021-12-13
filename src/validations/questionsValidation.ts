@@ -19,7 +19,13 @@ function newAnswer(answer:any): boolean {
     return !!schema.validate(answer).error;
 }
 
+function checkId(id:any): boolean {
+    const schema = Joi.number().min(1).integer().required();
+    return !!schema.validate(id).error;
+}
+
 export {
     newQuestion,
     newAnswer,
+    checkId,
 };
